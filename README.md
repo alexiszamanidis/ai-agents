@@ -16,6 +16,10 @@ Use these skill files as prompts or reference material for code review, refactor
 
 Each skill folder contains a `SKILL.md` prompt definition that captures the behavior and constraints for a particular development mindset.
 
+## Repository agent rules
+
+- `AGENTS.md` contains repository-wide agent instructions and guidelines used by automated agents and contributors. It documents rules for agent behavior, commit conventions, and other global policies; refer to [AGENTS.md](AGENTS.md) for the full text.
+
 ## Useful links
 
 - [agent-rules-books](https://github.com/ciembor/agent-rules-books/)
