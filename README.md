@@ -4,10 +4,10 @@ This repository contains curated agent skill definitions for AI-assisted develop
 
 ## Structure
 
-- `skills/clean-code/` — Clean Code guidance and rules.
-- `skills/refactoring/` — Refactoring practices and recommendations.
-- `skills/working-effectively-with-legacy-code/` — Legacy code handling and maintenance guidance.
-- `skills/ticket-commit/` — Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise.
+-   `skills/clean-code/` — Clean Code guidance and rules.
+-   `skills/refactoring/` — Refactoring practices and recommendations.
+-   `skills/working-effectively-with-legacy-code/` — Legacy code handling and maintenance guidance.
+-   `skills/ticket-commit/` — Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise.
 
 ## Purpose
 
@@ -19,8 +19,8 @@ Each skill folder contains a `SKILL.md` prompt definition that captures the beha
 
 ## Repository agent rules
 
-- `AGENTS.md` contains repository-wide agent instructions and guidelines used by automated agents and contributors. It documents rules for agent behavior, commit conventions, and other global policies; refer to [AGENTS.md](AGENTS.md) for the full text.
+-   `AGENTS.md` contains repository-wide agent instructions and guidelines used by automated agents and contributors. It documents rules for agent behavior, commit conventions, and other global policies; refer to [AGENTS.md](AGENTS.md) for the full text.
 
 ## Useful links
 
-- [agent-rules-books](https://github.com/ciembor/agent-rules-books/)
+-   [agent-rules-books](https://github.com/ciembor/agent-rules-books/)

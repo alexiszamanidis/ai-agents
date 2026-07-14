@@ -1,9 +1,9 @@
 ---
 name: ticket-commit
 description: >-
-  Review local git changes and commit with a message derived from the branch
-  name. Use when the user asks to commit, says /ticket-commit, or asks to
-  "commit my changes".
+    Review local git changes and commit with a message derived from the branch
+    name. Use when the user asks to commit, says /ticket-commit, or asks to
+    "commit my changes".
 disable-model-invocation: true
 ---
 
@@ -39,16 +39,16 @@ Otherwise:
 feat(tool1,tool2): concise mes1, concise mes2
 ```
 
-- `feat` is the default type; use `fix`, `docs`, `refactor`, etc. when it fits better.
-- Scope is one or more tools/areas, comma-separated.
-- Body is short imperative phrases, comma-separated when there are multiple changes.
+-   `feat` is the default type; use `fix`, `docs`, `refactor`, etc. when it fits better.
+-   Scope is one or more tools/areas, comma-separated.
+-   Body is short imperative phrases, comma-separated when there are multiple changes.
 
 Example: `feat(i3,nvim): fix i3 window, add nvim lsp config`
 
 ## Safety
 
-- Never update git config
-- Never use `--no-verify`, `--force`, `push --force`, or `reset --hard` unless explicitly requested
-- Never amend unless the user asked, it is your unpushed commit, and amend rules apply
-- Never push unless explicitly requested
-- Never create empty commits
+-   Never update git config
+-   Never use `--no-verify`, `--force`, `push --force`, or `reset --hard` unless explicitly requested
+-   Never amend unless the user asked, it is your unpushed commit, and amend rules apply
+-   Never push unless explicitly requested
+-   Never create empty commits
