@@ -7,7 +7,7 @@ This repository contains curated agent skill definitions for AI-assisted develop
 -   `skills/clean-code/` — Clean Code guidance and rules.
 -   `skills/refactoring/` — Refactoring practices and recommendations.
 -   `skills/working-effectively-with-legacy-code/` — Legacy code handling and maintenance guidance.
--   `skills/ticket-commit/` — Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise.
+-   `skills/commit/` — Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise.
 
 ## Purpose
 

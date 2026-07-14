@@ -1,8 +1,8 @@
 ---
-name: ticket-commit
-description: >-
+name: commit
+description: >
     Review local git changes and commit with a message derived from the branch
-    name. Use when the user asks to commit, says /ticket-commit, or asks to
+    name. Use when the user asks to commit, says /commit, or asks to
     "commit my changes".
 disable-model-invocation: true
 ---
