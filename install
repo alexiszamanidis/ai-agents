@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+log() { printf '%s\n' "$*"; }
+error() { printf 'ERROR: %s\n' "$*" >&2; }
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+skills_dir="$repo_root/skills"
+link_dir="$HOME/.agents/skills"
+instruction_source="$repo_root/AGENTS.md"
+instruction_targets=("$HOME/.cursor/AGENTS.md" "$HOME/.github/copilot-instructions.md")
+
+log "Starting AI agents install from $repo_root"
+log "Skills dir: $skills_dir"
+log "Link dir: $link_dir"
+log "Instruction source: $instruction_source"
+
+mkdir -p "$link_dir"
+if [[ ! -d "$link_dir" ]]; then
+  error "failed to create or validate skills link directory: $link_dir"
+  exit 1
+fi
+
+if [[ ! -d "$skills_dir" ]]; then
+  echo "WARNING: skills directory does not exist: $skills_dir" >&2
+  exit 0
+fi
+
+declare -A desired_links=()
+log "Linking skills from $skills_dir to $link_dir"
+while IFS= read -r -d '' skill_dir; do
+  skill_name="$(basename "$skill_dir")"
+  desired_links["$skill_name"]=1
+  target_link="$link_dir/$skill_name"
+  log "  -> linking $skill_name"
+  ln -sfn "$skill_dir" "$target_link"
+done < <(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d -print0)
+
+log "Removing stale skill symlinks in $link_dir"
+while IFS= read -r -d '' existing_link; do
+  link_name="$(basename "$existing_link")"
+  if [[ -z "${desired_links[$link_name]:-}" ]]; then
+    log "  -> removing stale link $link_name"
+    rm -f "$existing_link"
+  fi
+done < <(find "$link_dir" -maxdepth 1 -mindepth 1 -type l -print0)
+
+if [[ -f "$instruction_source" ]]; then
+  log "Linking instruction file to target paths"
+  for dest in "$HOME/.cursor/AGENTS.md" "$HOME/.github/copilot-instructions.md"; do
+    log "  -> $dest"
+    mkdir -p "$(dirname "$dest")"
+    ln -sfn "$instruction_source" "$dest"
+  done
+else
+  log "Instruction source not found: $instruction_source"
+fi
