@@ -1,10 +1,10 @@
 ---
 name: optimize-called-skills
 description: >-
-  Audits skills in this repository against their real agent-transcript runs
-  and tightens instructions or scripts where those runs wasted steps or failed.
-  Use when the user asks to optimize, tune, or improve the skills that were
-  called, or invokes optimize-called-skills.
+    Audits skills in this repository against their real agent-transcript runs
+    and tightens instructions or scripts where those runs wasted steps or failed.
+    Use when the user asks to optimize, tune, or improve the skills that were
+    called, or invokes optimize-called-skills.
 disable-model-invocation: true
 ---
 
@@ -23,16 +23,16 @@ Audit `skills/*/SKILL.md` in this repository. Change a skill only when one of it
 
 For each called skill, keep only repeated or failed work:
 
-- schema lookups that belong in one parallel batch
-- independent reads made serially
-- a follow-up fetch after create or update already returned the key
-- broader searches after a distinctive identifier already explained the request
-- generated one-off code for a lookup the skill repeats
-- credentials parsed from MCP config
-- message text passed through shell quotes
-- the wrong MCP namespace for a known issue key
-- success reported after a partial script failure
-- unbounded result or report size
+-   schema lookups that belong in one parallel batch
+-   independent reads made serially
+-   a follow-up fetch after create or update already returned the key
+-   broader searches after a distinctive identifier already explained the request
+-   generated one-off code for a lookup the skill repeats
+-   credentials parsed from MCP config
+-   message text passed through shell quotes
+-   the wrong MCP namespace for a known issue key
+-   success reported after a partial script failure
+-   unbounded result or report size
 
 ## Change
 
