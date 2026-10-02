@@ -8,12 +8,17 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 skills_dir="$repo_root/skills"
 link_dir="$HOME/.agents/skills"
 instruction_source="$repo_root/AGENTS.md"
-instruction_targets=("$HOME/.cursor/AGENTS.md" "$HOME/.github/copilot-instructions.md")
+cursor_rule_source="$repo_root/.cursor/rules/global-agent-instructions.mdc"
+cursor_rules_dir="$HOME/.cursor/rules"
+cursor_instruction_target="$cursor_rules_dir/global-agent-instructions.mdc"
+legacy_cursor_instruction_target="$HOME/.cursor/AGENTS.md"
+copilot_instruction_target="$HOME/.github/copilot-instructions.md"
 
 log "Starting AI agents install from $repo_root"
 log "Skills dir: $skills_dir"
 log "Link dir: $link_dir"
 log "Instruction source: $instruction_source"
+log "Cursor rule source: $cursor_rule_source"
 
 mkdir -p "$link_dir"
 if [[ ! -d "$link_dir" ]]; then
@@ -45,13 +50,26 @@ while IFS= read -r -d '' existing_link; do
   fi
 done < <(find "$link_dir" -maxdepth 1 -mindepth 1 -type l -print0)
 
+log "Linking global instruction files"
+
+if [[ -f "$cursor_rule_source" ]]; then
+  log "  -> $cursor_instruction_target"
+  mkdir -p "$cursor_rules_dir"
+  ln -sfn "$cursor_rule_source" "$cursor_instruction_target"
+else
+  log "Cursor rule source not found: $cursor_rule_source"
+fi
+
+if [[ -L "$legacy_cursor_instruction_target" &&
+  "$(readlink "$legacy_cursor_instruction_target")" == "$instruction_source" ]]; then
+  log "  -> removing obsolete $legacy_cursor_instruction_target"
+  rm -f "$legacy_cursor_instruction_target"
+fi
+
 if [[ -f "$instruction_source" ]]; then
-  log "Linking instruction file to target paths"
-  for dest in "$HOME/.cursor/AGENTS.md" "$HOME/.github/copilot-instructions.md"; do
-    log "  -> $dest"
-    mkdir -p "$(dirname "$dest")"
-    ln -sfn "$instruction_source" "$dest"
-  done
+  log "  -> $copilot_instruction_target"
+  mkdir -p "$(dirname "$copilot_instruction_target")"
+  ln -sfn "$instruction_source" "$copilot_instruction_target"
 else
   log "Instruction source not found: $instruction_source"
 fi
