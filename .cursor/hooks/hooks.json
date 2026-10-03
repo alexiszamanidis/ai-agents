@@ -1,0 +1,16 @@
+{
+    "version": 1,
+    "hooks": {
+        "afterAgentResponse": [
+            {
+                "command": "./hooks/prose-style.py"
+            }
+        ],
+        "stop": [
+            {
+                "command": "./hooks/prose-style.py",
+                "loop_limit": 1
+            }
+        ]
+    }
+}
