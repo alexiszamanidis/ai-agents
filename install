@@ -13,9 +13,11 @@ cursor_rules_dir="$HOME/.cursor/rules"
 cursor_instruction_target="$cursor_rules_dir/global-agent-instructions.mdc"
 cursor_hook_config_source="$repo_root/.cursor/hooks/hooks.json"
 cursor_hook_script_source="$repo_root/.cursor/hooks/prose-style.py"
+cursor_monthly_hook_source="$repo_root/.cursor/hooks/monthly-context-cleanup.py"
 cursor_hooks_dir="$HOME/.cursor/hooks"
 cursor_hook_config_target="$HOME/.cursor/hooks.json"
 cursor_hook_script_target="$cursor_hooks_dir/prose-style.py"
+cursor_monthly_hook_target="$cursor_hooks_dir/monthly-context-cleanup.py"
 legacy_hook_script_target="$cursor_hooks_dir/no-dashes.py"
 legacy_cursor_instruction_target="$HOME/.cursor/AGENTS.md"
 copilot_instruction_target="$HOME/.github/copilot-instructions.md"
@@ -53,8 +55,13 @@ log "Removing stale skill symlinks in $link_dir"
 while IFS= read -r -d '' existing_link; do
   link_name="$(basename "$existing_link")"
   if [[ -z "${desired_links[$link_name]:-}" ]]; then
-    log "  -> removing stale link $link_name"
-    rm -f "$existing_link"
+    existing_target="$(readlink "$existing_link")"
+    if [[ "$existing_target" == "$skills_dir/"* ]]; then
+      log "  -> removing stale managed link $link_name"
+      rm -f "$existing_link"
+    else
+      log "  -> retaining unmanaged link $link_name"
+    fi
   fi
 done < <(find "$link_dir" -maxdepth 1 -mindepth 1 -type l -print0)
 
@@ -84,12 +91,16 @@ fi
 
 log "Linking Cursor hooks"
 
-if [[ -f "$cursor_hook_config_source" && -f "$cursor_hook_script_source" ]]; then
+if [[ -f "$cursor_hook_config_source" &&
+  -f "$cursor_hook_script_source" &&
+  -f "$cursor_monthly_hook_source" ]]; then
   mkdir -p "$cursor_hooks_dir"
   log "  -> $cursor_hook_config_target"
   ln -sfn "$cursor_hook_config_source" "$cursor_hook_config_target"
   log "  -> $cursor_hook_script_target"
   ln -sfn "$cursor_hook_script_source" "$cursor_hook_script_target"
+  log "  -> $cursor_monthly_hook_target"
+  ln -sfn "$cursor_monthly_hook_source" "$cursor_monthly_hook_target"
   if [[ -L "$legacy_hook_script_target" ]]; then
     log "  -> removing obsolete $legacy_hook_script_target"
     rm -f "$legacy_hook_script_target"

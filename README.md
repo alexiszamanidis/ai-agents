@@ -5,6 +5,7 @@ This repository contains curated agent skill definitions for AI-assisted develop
 ## Structure
 
 -   `skills/chat-history-skill-audit/`: Find repeated workflows across local Cursor chats and compare them with existing skills.
+-   `skills/agent-context-cleanup/`: Audit recurring agent context, duplicate configuration, plaintext secret fields, and disk-only state.
 -   `skills/clean-code/`: Clean Code guidance and rules.
 -   `skills/commit/`: Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise.
 -   `skills/optimize-called-skills/`: Improve skills using evidence from their real transcript runs.
