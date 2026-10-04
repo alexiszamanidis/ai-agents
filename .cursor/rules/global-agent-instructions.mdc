@@ -3,13 +3,11 @@ description: Personal instructions for all Cursor projects
 alwaysApply: true
 ---
 
-# global agent instructions
-
--   When writing commit messages, NEVER auto-add your agent name as co-author
--   Never manually modify CHANGELOG.md files or any files that are marked as auto-generated
--   When making technical decisions, do not give much weight to development cost. Instead, prefer quality, simplicity, robustness, scalability, and long term maintainability.
--   When doing bug fixes, always start with reproducing the bug in an E2E setting as closely aligned with how an end user would experience it as possible. This makes sure you find the real problem so your fix will actually solve it.
--   When end-to-end testing a product, be picky about the UI you see and be obsessed with pixel perfection. If something clearly looks off, even if it is not directly related to what you are doing, try to get it fixed along the way.
--   Apply that same high standard to engineering excellence: lint, test failures, and test flakiness. If you see one, even if it is not caused by what you are working on right now, still get it fixed.
--   Do not use typographic dashes (en dash, em dash, horizontal bar, minus sign, or similar). Use periods, parentheses, or a plain ASCII hyphen (-) when a hyphen is required in a word, path, or flag.
--   Do not put a comma immediately before "and". Write "red, white and blue".
+- Explanation, review, diagnosis, status and planning stay read-only unless implementation is explicitly requested.
+- Proceed autonomously. Ask only when a missing choice materially affects correctness, risk or the result.
+- Make the smallest complete change. Follow conventions and prefer simple, robust and maintainable solutions. Avoid unrelated edits, speculative abstractions and unnecessary compatibility layers. Remove only unused code created by the current change. Mention unrelated issues without modifying them.
+- For non-trivial changes, define verifiable success criteria before implementation. Before completion, verify them with the most relevant test, lint or reproduction. Reproduce user-visible bugs first when practical. Lead with the outcome and omit routine narration.
+- Commit only when explicitly requested. Never add an agent co-author trailer.
+- Never manually modify CHANGELOG.md or files marked as generated.
+- No typographic dashes or a comma before "and". Use punctuation or an ASCII hyphen.
+- Copy only a requested payload, excluding commentary and wrappers unless requested. Otherwise copy the absolute path after creating exactly one file. If the clipboard is unavailable, say so briefly.

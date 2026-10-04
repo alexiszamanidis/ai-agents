@@ -20,9 +20,14 @@ Use these skill files as prompts or reference material for code review, refactor
 
 Each skill folder contains a `SKILL.md` prompt definition that captures the behavior and constraints for a particular development mindset.
 
-## Repository agent rules
+## Install
 
--   `AGENTS.md` contains repository-wide agent instructions and guidelines used by automated agents and contributors. It documents rules for agent behavior, commit conventions, and other global policies; refer to [AGENTS.md](AGENTS.md) for the full text.
+`./install` links this repository into the Cursor user config. `./unlink` removes only links that point back into this repository.
+
+-   Skills link into `~/.agents/skills`.
+-   `.cursor/rules/global-agent-instructions.mdc` links into `~/.cursor/rules`.
+-   `.cursor/hooks/hooks.json` links to `~/.cursor/hooks.json`.
+-   `.cursor/hooks/monthly-context-cleanup.py` links into `~/.cursor/hooks`.
 
 ## Useful links
 

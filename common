@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+log() { printf '%s\n' "$*"; }
+error() { printf 'ERROR: %s\n' "$*" >&2; }
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+skills_dir="$repo_root/skills"
+skills_link_dir="$HOME/.agents/skills"
+
+cursor_rule_source="$repo_root/.cursor/rules/global-agent-instructions.mdc"
+cursor_rule_target="$HOME/.cursor/rules/global-agent-instructions.mdc"
+cursor_hook_config_source="$repo_root/.cursor/hooks/hooks.json"
+cursor_hook_config_target="$HOME/.cursor/hooks.json"
+cursor_monthly_hook_source="$repo_root/.cursor/hooks/monthly-context-cleanup.py"
+cursor_monthly_hook_target="$HOME/.cursor/hooks/monthly-context-cleanup.py"
+
+require_source() {
+  local source="$1"
+  if [[ ! -e "$source" ]]; then
+    error "missing $source"
+    exit 1
+  fi
+}
+
+link_file() {
+  local source="$1"
+  local target="$2"
+  require_source "$source"
+  mkdir -p "$(dirname "$target")"
+  log "  -> $target"
+  ln -sfn "$source" "$target"
+}
+
+remove_managed_link() {
+  local target="$1"
+  local source="$2"
+  if [[ ! -e "$target" && ! -L "$target" ]]; then
+    return 0
+  fi
+  if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+    log "  -> removing $target"
+    rm -f "$target"
+    return 0
+  fi
+  log "  -> leaving unmanaged $target"
+}
+
+link_skills() {
+  local -A desired=()
+  local skill_dir skill_name existing_link link_name existing_target
+
+  if [[ ! -d "$skills_dir" ]]; then
+    error "skills directory does not exist: $skills_dir"
+    exit 1
+  fi
+
+  mkdir -p "$skills_link_dir"
+  log "Linking skills from $skills_dir to $skills_link_dir"
+  while IFS= read -r -d '' skill_dir; do
+    skill_name="$(basename "$skill_dir")"
+    desired["$skill_name"]=1
+    log "  -> linking $skill_name"
+    ln -sfn "$skill_dir" "$skills_link_dir/$skill_name"
+  done < <(find "$skills_dir" -maxdepth 1 -mindepth 1 -type d -print0)
+
+  log "Removing stale skill symlinks in $skills_link_dir"
+  while IFS= read -r -d '' existing_link; do
+    link_name="$(basename "$existing_link")"
+    if [[ -n "${desired[$link_name]:-}" ]]; then
+      continue
+    fi
+    existing_target="$(readlink "$existing_link")"
+    if [[ "$existing_target" == "$skills_dir/"* ]]; then
+      log "  -> removing stale $link_name"
+      rm -f "$existing_link"
+    else
+      log "  -> leaving unmanaged $link_name"
+    fi
+  done < <(find "$skills_link_dir" -maxdepth 1 -mindepth 1 -type l -print0)
+}
+
+unlink_skills() {
+  local existing_link link_name existing_target
+
+  if [[ ! -d "$skills_link_dir" ]]; then
+    return 0
+  fi
+
+  log "Removing skill symlinks in $skills_link_dir"
+  while IFS= read -r -d '' existing_link; do
+    link_name="$(basename "$existing_link")"
+    existing_target="$(readlink "$existing_link")"
+    if [[ "$existing_target" == "$skills_dir/"* ]]; then
+      log "  -> removing $link_name"
+      rm -f "$existing_link"
+    else
+      log "  -> leaving unmanaged $link_name"
+    fi
+  done < <(find "$skills_link_dir" -maxdepth 1 -mindepth 1 -type l -print0)
+}
+
+link_cursor() {
+  log "Linking Cursor files"
+  link_file "$cursor_rule_source" "$cursor_rule_target"
+  link_file "$cursor_hook_config_source" "$cursor_hook_config_target"
+  link_file "$cursor_monthly_hook_source" "$cursor_monthly_hook_target"
+}
+
+unlink_cursor() {
+  log "Removing Cursor links"
+  remove_managed_link "$cursor_rule_target" "$cursor_rule_source"
+  remove_managed_link "$cursor_hook_config_target" "$cursor_hook_config_source"
+  remove_managed_link "$cursor_monthly_hook_target" "$cursor_monthly_hook_source"
+}
+
+link_all() {
+  log "Linking AI agent files from $repo_root"
+  link_skills
+  link_cursor
+}
+
+unlink_all() {
+  log "Unlinking AI agent files installed from $repo_root"
+  unlink_skills
+  unlink_cursor
+}
