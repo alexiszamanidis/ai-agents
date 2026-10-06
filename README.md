@@ -4,17 +4,17 @@ This repository contains curated agent skill definitions for AI-assisted develop
 
 ## Structure
 
-| Skill | What it does |
-| --- | --- |
-| `skills/agent-context-cleanup/` | Audit recurring agent context, duplicate configuration, plaintext secret fields, and disk-only state. |
-| `skills/chat-history-skill-audit/` | Find repeated workflows across local Cursor chats and compare them with existing skills. |
-| `skills/clean-code/` | Clean Code guidance and rules. |
-| `skills/commit/` | Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise. |
-| `skills/optimize-called-skills/` | Improve skills using evidence from their real transcript runs. |
-| `skills/refactoring/` | Refactoring practices and recommendations. |
-| `skills/retro/` | Retrospective on a coding session, suggesting environment improvements for future runs. |
-| `skills/working-effectively-with-legacy-code/` | Legacy code handling and maintenance guidance. |
-| `skills/writing-for-agents/` | Write documents an agent reads: skills, `AGENTS.md`, `CLAUDE.md`, and docs reached by a pointer. |
+| Skill                                          | What it does                                                                                                                           |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `skills/agent-context-cleanup/`                | Audit recurring agent context, duplicate configuration, plaintext secret fields, and disk-only state.                                  |
+| `skills/chat-history-skill-audit/`             | Find repeated workflows across local Cursor chats and compare them with existing skills.                                               |
+| `skills/clean-code/`                           | Clean Code guidance and rules.                                                                                                         |
+| `skills/commit/`                               | Review changes and commit using branch-derived messages: `PROJ-1234: summary` on ticket branches, or `feat(scope): summary` otherwise. |
+| `skills/optimize-called-skills/`               | Improve skills using evidence from their real transcript runs.                                                                         |
+| `skills/refactoring/`                          | Refactoring practices and recommendations.                                                                                             |
+| `skills/retro/`                                | Retrospective on a coding session, suggesting environment improvements for future runs.                                                |
+| `skills/working-effectively-with-legacy-code/` | Legacy code handling and maintenance guidance.                                                                                         |
+| `skills/writing-for-agents/`                   | Write documents an agent reads: skills, `AGENTS.md`, `CLAUDE.md`, and docs reached by a pointer.                                       |
 
 ## Purpose
 
