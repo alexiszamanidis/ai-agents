@@ -29,7 +29,7 @@ Each skill folder contains a `SKILL.md` prompt definition that captures the beha
 `./install` links this repository into the Cursor user config. `./unlink` removes only links that point back into this repository.
 
 -   Skills link into `~/.agents/skills`.
--   `.cursor/rules/global-agent-instructions.mdc` links into `~/.cursor/rules`.
+-   `.cursor/rules/global-agent-instructions.mdc` links into `~/.cursor/rules` (and `/space/git-repos/.cursor/rules` when `/space/git-repos` exists).
 -   `.cursor/hooks/hooks.json` links to `~/.cursor/hooks.json`.
 -   `.cursor/hooks/monthly-context-cleanup.py` links into `~/.cursor/hooks`.
 

@@ -7,8 +7,14 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 skills_dir="$repo_root/skills"
 skills_link_dir="$HOME/.agents/skills"
 
-cursor_rule_source="$repo_root/.cursor/rules/global-agent-instructions.mdc"
-cursor_rule_target="$HOME/.cursor/rules/global-agent-instructions.mdc"
+cursor_rule_sources=(
+  "$repo_root/.cursor/rules/global-agent-instructions.mdc"
+)
+cursor_work_root="${CURSOR_WORK_ROOT:-/space/git-repos}"
+cursor_rule_roots=(
+  "$HOME"
+  "$cursor_work_root"
+)
 cursor_hook_config_source="$repo_root/.cursor/hooks/hooks.json"
 cursor_hook_config_target="$HOME/.cursor/hooks.json"
 cursor_monthly_hook_source="$repo_root/.cursor/hooks/monthly-context-cleanup.py"
@@ -100,15 +106,26 @@ unlink_skills() {
 }
 
 link_cursor() {
+  local root source
   log "Linking Cursor files"
-  link_file "$cursor_rule_source" "$cursor_rule_target"
+  for root in "${cursor_rule_roots[@]}"; do
+    [[ -d "$root" ]] || continue
+    for source in "${cursor_rule_sources[@]}"; do
+      link_file "$source" "$root/.cursor/rules/$(basename "$source")"
+    done
+  done
   link_file "$cursor_hook_config_source" "$cursor_hook_config_target"
   link_file "$cursor_monthly_hook_source" "$cursor_monthly_hook_target"
 }
 
 unlink_cursor() {
+  local root source
   log "Removing Cursor links"
-  remove_managed_link "$cursor_rule_target" "$cursor_rule_source"
+  for root in "${cursor_rule_roots[@]}"; do
+    for source in "${cursor_rule_sources[@]}"; do
+      remove_managed_link "$root/.cursor/rules/$(basename "$source")" "$source"
+    done
+  done
   remove_managed_link "$cursor_hook_config_target" "$cursor_hook_config_source"
   remove_managed_link "$cursor_monthly_hook_target" "$cursor_monthly_hook_source"
 }
